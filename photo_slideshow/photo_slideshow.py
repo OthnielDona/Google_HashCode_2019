@@ -1,4 +1,5 @@
-from math import *
+# from math import *
+
 def read_file(fname):
     num = 0
     photo = {'id':0, 'orientation':'', 'numtag':0, 'tags':[]}
@@ -61,6 +62,7 @@ def regroupPhotosHor(photos):
     return temp
 
 def matchPhoto(photosVert, photosHor):
+    pass
 
 def write_file(num, coll):
     with open('out_example.txt', 'wb') as f:
@@ -78,12 +80,12 @@ if __name__ == '__main__':
 
     photosVertDouble = []
 
-    photosVertDouble = compareTags(photosVertDouble, photosVert)
+    photosVertDouble = compareTags(photosVertDouble, photosVertical, 0)
 
     nouvellePhotos = photosVertDouble + photosHorizontal
 
     photosCollection = []
 
-    compareTags(photosCollection, nouvellePhotos)
+    photosCollection = compareTags(photosCollection, nouvellePhotos, 0)
 
-    read_file(num, coll)
+    write_file(num, photosCollection)
