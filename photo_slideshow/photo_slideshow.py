@@ -1,29 +1,24 @@
-# from math import *
-
 def read_file(fname):
+    # nombre de photo
     num = 0
-    photo = {'id':0, 'orientation':'', 'numtag':0, 'tags':[]}
     # collection de photo
     photos = []
     # id de photo
     id = 0
 
     lines = open(fname).readlines()
-    num = lines.pop(0)
-    for line in lines:
+    num = int(lines[0])
+    for line in lines[1:]:
         val = line.split() 
-        photo['id'] = id
-        photo['orientation'] = val[0]
-        photo['numtag'] = val[1]
-        photo['tags'] = val[2:]
-        photos.append(photo)
+        photos.append({'id':id, 'orientation':val[0], 'numtag':int(val[1]), 'tags':val[2:]})
         id += 1
 
     return num, photos
 
 def compareTags(temp, photosVert, i):
     if len(photosVert) > 1:
-        if compareTagsNumber(photosVert[0], photosVert[i]) > 0 and compareTagsNumber(photosVert[0], photosVert[i]) < min(photosVert[0]['numtag'], photosVert[i]['numtag']):
+        if compareTagsNumber(photosVert[0], photosVert[i]) > 0 and
+        compareTagsNumber(photosVert[0], photosVert[i]) < min(photosVert[0]['numtag'], photosVert[i]['numtag']):
             temp.append([photosVert.pop(0), photosVert.pop(i)])
             compareTags(temp, photosVert, i)
         else:
@@ -73,8 +68,10 @@ def write_file(num, coll):
 
 
 if __name__ == '__main__':
+    # checked
     num, photos = read_file('a_example.txt')
 
+    # checked
     photosVertical = regroupPhotosVert(photos)
     photosHorizontal = regroupPhotosHor(photos)
 
