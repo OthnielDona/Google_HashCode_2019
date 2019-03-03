@@ -41,14 +41,15 @@ def matchPhotosVert(photosVert, collect = [], i = 1):
     if len(photosVert) > 1:
         if compareTags(photosVert[0]['tags'], photosVert[i]['tags']):
             collect.append([photosVert[0]['id'], photosVert[i]['id'], list(set(photosVert[0]['tags'] + photosVert[i]['tags']))])
-            matchPhotosVert(collect, photosVert, i)
+            photosVert.pop(0); photosVert.pop(i)
+            matchPhotosVert(photosVert, collect, i)
         else:
             i += 1
-            matchPhotosVert(collect, photosVert, i)
+            matchPhotosVert(photosVert, collect, i)
 
     return collect
 
-def matchPhoto(photosVert, photosHor):
+def createSlide(collVert, photosHor, finalCollect = []):
     pass
 
 def write_file(num, coll):
@@ -63,14 +64,6 @@ if __name__ == '__main__':
     # checked
     num, photosVertical, photosHorizontal = read_file('a_example.txt')
 
-    photosVertDouble = []
+    collect_photos_vert = matchPhotosVert(photosVertical)
 
-    photosVertDouble = compareTags(photosVertDouble, photosVertical, 0)
-
-    nouvellePhotos = photosVertDouble + photosHorizontal
-
-    photosCollection = []
-
-    photosCollection = compareTags(photosCollection, nouvellePhotos, 0)
-
-    write_file(num, photosCollection)
+    # write_file(num, photosCollection)
