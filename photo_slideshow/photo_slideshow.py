@@ -1,19 +1,35 @@
 def read_file(fname):
     # nombre de photo
     num = 0
-    # collection de photo
-    photos = []
+    # collection de photo vertical
+    photosVert = []
+    # collection de photo horizontal
+    photosHor = []
     # id de photo
     id = 0
 
-    lines = open(fname).readlines()
-    num = int(lines[0])
-    for line in lines[1:]:
-        val = line.split() 
-        photos.append({'id':id, 'orientation':val[0], 'numtag':int(val[1]), 'tags':val[2:]})
-        id += 1
+    with open(fname) as f:
+        num = int(f.readline())
+        for line in f.readlines():
+            val = line.split()
+            if val[0] == 'V':
+                photosVert.append({
+                    'id':id,
+                    'orientation':val[0],
+                    'numtags':int(val[1]),
+                    'tags':val[2:]
+                })
+                id += 1
+            else:
+                photosHor.append({
+                    'id':id,
+                    'orientation':val[0],
+                    'numtags':int(val[1]),
+                    'tags':val[2:]
+                })
+                id += 1
 
-    return num, photos
+    return num, photosVert, photosHor
 
 def compareTags(tag1, tag2):
     if set(tag1) < set(tag2) or set(tag2) < set(tag1):
@@ -32,22 +48,6 @@ def matchPhotosVert(photosVert, collect = [], i = 1):
 
     return collect
 
-def regroupPhotosVert(photos):
-    temp = []
-    for photo in photos:
-        if photo['orientation'] == 'V':
-            temp.append(photo)
-
-    return temp
-
-def regroupPhotosHor(photos):
-    temp = []
-    for photo in photos:
-        if photo['orientation'] == 'H':
-            temp.append(photo)
-
-    return temp
-
 def matchPhoto(photosVert, photosHor):
     pass
 
@@ -61,11 +61,7 @@ def write_file(num, coll):
 
 if __name__ == '__main__':
     # checked
-    num, photos = read_file('a_example.txt')
-
-    # checked
-    photosVertical = regroupPhotosVert(photos)
-    photosHorizontal = regroupPhotosHor(photos)
+    num, photosVertical, photosHorizontal = read_file('a_example.txt')
 
     photosVertDouble = []
 
