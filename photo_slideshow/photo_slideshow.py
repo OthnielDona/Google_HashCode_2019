@@ -15,30 +15,22 @@ def read_file(fname):
 
     return num, photos
 
-def compareTags(temp, photosVert, i):
+def compareTags(tag1, tag2):
+    if set(tag1) < set(tag2) or set(tag2) < set(tag1):
+        return False
+    else:
+        return True
+
+def matchPhotosVert(photosVert, collect = [], i = 1):
     if len(photosVert) > 1:
-        if compareTagsNumber(photosVert[0], photosVert[i]) > 0 and
-        compareTagsNumber(photosVert[0], photosVert[i]) < min(photosVert[0]['numtag'], photosVert[i]['numtag']):
-            temp.append([photosVert.pop(0), photosVert.pop(i)])
-            compareTags(temp, photosVert, i)
+        if compareTags(photosVert[0]['tags'], photosVert[i]['tags']):
+            collect.append([photosVert[0]['id'], photosVert[i]['id'], list(set(photosVert[0]['tags'] + photosVert[i]['tags']))])
+            matchPhotosVert(collect, photosVert, i)
         else:
             i += 1
-            compareTags(temp, photosVert, i)
+            matchPhotosVert(collect, photosVert, i)
 
-    return temp
-
-def compareTagsNumber(photo1, photo2):
-    x = 0
-    if len(photo1['tags']) > 0:
-        if photo1['tags'][0] in photo2['tags']:
-            photo1['tags'].pop(0)
-            x += 1
-            compareTagsNumber(photo1, photo2)
-        else:
-            photo1['tags'].pop(0)
-            compareTagsNumber(photo1, photo2)
-
-    return x
+    return collect
 
 def regroupPhotosVert(photos):
     temp = []
