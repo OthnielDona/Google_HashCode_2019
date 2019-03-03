@@ -50,7 +50,21 @@ def matchPhotosVert(photosVert, collect = [], i = 1):
     return collect
 
 def createSlide(collVert, photosHor, finalCollect = []):
-    pass
+    if collVert > 0 and photosHor > 0:
+        alt = 1
+        tags1 = []
+        tags2 = []
+
+        if alt:
+            tags1 = collVert[0][2]
+            tags2 = photosHor[0]['tags']
+            
+            if compareTags(tag1, tag2):
+            finalCollect.append(str(collVert[0][0:2]))
+            finalCollect
+        else:
+            tags1 = photosHor[0]['tags']
+            tags2 = collVert[0][2]
 
 def write_file(num, coll):
     with open('out_example.txt', 'wb') as f:
