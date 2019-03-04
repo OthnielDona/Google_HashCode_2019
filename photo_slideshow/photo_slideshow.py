@@ -40,8 +40,11 @@ def compareTags(tag1, tag2):
 def matchPhotosVert(photosVert, collect = [], i = 1):
     if len(photosVert) > 1:
         if compareTags(photosVert[0]['tags'], photosVert[i]['tags']):
-            collect.append([photosVert[0]['id'], photosVert[i]['id'], list(set(photosVert[0]['tags'] + photosVert[i]['tags']))])
-            photosVert.pop(0); photosVert.pop(i)
+            collect.append({
+                'ids':str(photosVert[0]['id']) + ' ' + str(photosVert[i]['id']),
+                'tags':list(set(photosVert[0]['tags'] + photosVert[i]['tags']))
+            })
+            photosVert.pop(i); photosVert.pop(0)
             matchPhotosVert(photosVert, collect, i)
         else:
             i += 1
@@ -49,28 +52,30 @@ def matchPhotosVert(photosVert, collect = [], i = 1):
 
     return collect
 
-def createSlide(collVert, photosHor, finalCollect = []):
-    if collVert > 0 and photosHor > 0:
-        alt = 1
-        tags1 = []
-        tags2 = []
-
-        if alt:
-            tags1 = collVert[0][2]
-            tags2 = photosHor[0]['tags']
-            
-            if compareTags(tag1, tag2):
-            finalCollect.append(str(collVert[0][0:2]))
-            finalCollect
+def createSlide(collPhotos, slide = [], i = 1):
+    if len(collPhotos) > 1:
+        if compareTags(collPhotos[0]['tags'], collPhotos[i]['tags']):
+            slide.append(str(collPhotos[0]['ids']))
+            slide.append(str(collPhotos[i]['ids']))
+            collPhotos.pop(i), collPhotos.pop(0)
+            if len(collPhotos) == 1:
+                slide.append(str(collPhotos[0]['ids']))
+                return slide
+            createSlide(collPhotos, slide, i)
         else:
-            tags1 = photosHor[0]['tags']
-            tags2 = collVert[0][2]
+            i += 1
+            createSlide(collPhotos, slide, i)
+    elif len(collPhotos) == 1:
+        slide.append(str(collPhotos[0]['ids']))
+        return slide
+
+    return slide
 
 def write_file(num, coll):
-    with open('out_example.txt', 'wb') as f:
-        f.write(num)
+    with open('slideshow.txt', 'w') as f:
+        f.write(str(num)+'\n')
         for n in coll:
-            f.write(n)
+            f.write(str(n)+'\n')
 
 
 
@@ -79,5 +84,12 @@ if __name__ == '__main__':
     num, photosVertical, photosHorizontal = read_file('a_example.txt')
 
     collect_photos_vert = matchPhotosVert(photosVertical)
+    collect_photos_hor = []
+    for photo in photosHorizontal:
+        collect_photos_hor.append({'ids':photo['id'], 'tags':photo['tags']})
 
-    # write_file(num, photosCollection)
+    collect_photos = collect_photos_hor + collect_photos_vert
+
+    slideshow = createSlide(collect_photos)
+    
+    write_file(len(slideshow), slideshow)
