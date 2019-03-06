@@ -7,7 +7,11 @@
 .vscode/
 
 # output file
-slideshow.txt
+a_output.txt
+b_output.txt
+c_output.txt
+d_output.txt
+e_output.txt
 
 # input data files except a_example.txt
 b_lovely_landscapes.txt
