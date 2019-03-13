@@ -2,6 +2,23 @@
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
 
+### User added ###
+# VS Code
+.vscode/
+
+# output file
+a_output.txt
+b_output.txt
+c_output.txt
+d_output.txt
+e_output.txt
+
+# input data files except a_example.txt
+b_lovely_landscapes.txt
+c_memorable_moments.txt
+d_pet_pictures.txt
+e_shiny_selfies.txt
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
